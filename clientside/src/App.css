@@ -1,8 +1,5 @@
-body{
-  background-color: #00028a;
-  height: 100vh;
+body {
+  background-color: #ffffff;
   width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 100vh;
 }

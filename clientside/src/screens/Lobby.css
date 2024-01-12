@@ -1,0 +1,46 @@
+.mainContainer{
+    width: 25vw;
+    height: 70vh;
+    background-color: #cdff04;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label{
+    font-size: 20px;
+}
+
+input{
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+button{
+    border-radius: 5px;
+    width: 100%;
+    background-color: rgb(7, 47, 122);
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+    font-size: 15px;
+}
+
+.display{
+    margin-top:20px ;
+    width: 200px;
+    height: 200px;
+}
+img{
+    width: 100%;
+    height: 100%;
+}

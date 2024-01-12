@@ -1,19 +1,23 @@
 import React, { useCallback, useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../context/SocketProvider";
+import './Lobby.css'
+import wrong from '../GIFS/wrong.gif'
+import hello from '../GIFS/hi.gif'
 
 const Lobby = () => {
   const navigate = useNavigate()
 
   const socket = useSocket()
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [room, setRoom] = useState("");
 
   const handleSubmitForm = useCallback(
     (e) => {
       e.preventDefault();
-      socket.emit("room:join",{email,room})
+      socket.emit("room:join",{name,email,room})
     },
     [email, room, socket]
   )
@@ -31,9 +35,16 @@ const Lobby = () => {
   },[socket])
 
   return (
-    <div>
+    <div className="mainContainer">
       <h1>Lobby</h1>
       <form action="" onSubmit={handleSubmitForm}>
+        <label htmlFor="name">Name</label>
+        <input
+          type="name"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
         <label htmlFor="email">Email Id</label>
         <input
           type="email"
@@ -41,7 +52,6 @@ const Lobby = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <br />
         <label htmlFor="room">Room number</label>
         <input
           type="text"

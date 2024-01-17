@@ -2,28 +2,32 @@ import React, { useEffect, useCallback, useState } from "react";
 import { useSocket } from "../context/SocketProvider";
 import ReactPlayer from "react-player";
 import peer from "../service/peer";
+import "./Room.css";
+import { useLocation } from "react-router-dom";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const Room = () => {
+  const loc = useLocation();
   const socket = useSocket();
 
+  const [sender, setSender] = useState();
+  const [video, setVideo] = useState(false);
+  const [url, setUrl] = useState(false);
+
+  // const [stream, setStream] = useState(null);
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [mystream, setMystream] = useState();
   const [remotestream, setRemotestream] = useState();
 
-  const handleUserJoined = useCallback(({ name,email, id }) => {
+  const handleUserJoined = useCallback(({ name, email, id }) => {
     console.log(`Name ${name} joined the room`);
     setRemoteSocketId(id);
   });
 
   const handleCallUser = useCallback(async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: true,
-    });
-
     const offer = await peer.getOffer();
     socket.emit("user:call", { to: remoteSocketId, offer });
-    setMystream(stream);
+    console.log("hit");
   }, [remoteSocketId, socket]);
 
   const handleIncommingCall = useCallback(
@@ -43,7 +47,8 @@ const Room = () => {
 
   const SendStreams = useCallback(() => {
     for (const track of mystream.getTracks()) {
-      peer.peer.addTrack(track, mystream);
+      const send = peer.peer.addTrack(track, mystream);
+      setSender(send);
     }
   }, [mystream]);
 
@@ -62,7 +67,7 @@ const Room = () => {
   }, [remoteSocketId, socket]);
 
   const handleNegoIncomming = useCallback(
-    async({ from, offer }) => {
+    async ({ from, offer }) => {
       const ans = await peer.getAnswer(offer);
       socket.emit("peer:nego:done", { to: from, ans });
     },
@@ -71,6 +76,29 @@ const Room = () => {
 
   const handleNegoFinal = useCallback(async ({ ans }) => {
     await peer.setLocalDescription(ans);
+  }, []);
+
+  const handleVideoOff = async () => {
+    setVideo(!video);
+    const endstream = await mystream.getTracks().forEach((track) => {
+      if (track.readyState === "live" && track.kind === "video") {
+        track.stop();
+      }
+    });
+    setMystream(endstream);
+  };
+
+  const SwitchingOnCamera = async () => {
+    setVideo(false);
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: true,
+    });
+    setMystream(stream);
+  };
+
+  useEffect(() => {
+    SwitchingOnCamera();
   }, []);
 
   useEffect(() => {
@@ -84,7 +112,7 @@ const Room = () => {
   useEffect(() => {
     peer.peer.addEventListener("track", async (e) => {
       const remoteStream = e.streams;
-      console.log('GOT TRACKS')
+      console.log("GOT TRACKS");
       setRemotestream(remoteStream[0]);
     });
   });
@@ -112,37 +140,77 @@ const Room = () => {
     handleNegoFinal,
   ]);
 
+  const showLinkCopied = (text, result) => {
+    if (result === true) {
+      setUrl(true);
+    }
+    setTimeout(() => {
+      setUrl(false);
+    }, [1000]);
+  };
+
+  const endCallHandle = (e) => {
+    peer.peer.removeTrack(sender);
+    peer.peer.close();
+  };
+
   return (
-    <div>
-      <h1>Room</h1>
-      <h4>{remoteSocketId ? `Connected` : "Not connected"}</h4>
-      {mystream && <button>Send Stream</button>}
-      {remoteSocketId && <button onClick={handleCallUser}>Call</button>}
-      {mystream && (
-        <>
+    <>
+      {url && <div className="linkCopied">Meeting Link Copied</div>}
+      <div className="connectionText">
+      <h2>{remoteSocketId ? `Connected` : "Not connected"}</h2>
+              <button onClick={handleCallUser} className="ConnectButton">
+                Connect
+              </button>
+
+              <br />
+              <CopyToClipboard
+                text={loc.pathname.split("/")[2]}
+                onCopy={showLinkCopied}
+              >
+                <button className="copyLinkButton">Copy RoomId</button>
+              </CopyToClipboard> 
+      </div>
+      <div className="roomContainer">
+        <div className="videoContainer">
           <h1>My Stream</h1>
           <ReactPlayer
+            className="player"
             playing
-            muted
-            height="300px"
             width="500px"
             url={mystream}
           />
-        </>
-      )}
-      {remotestream && (
-        <>
-          <h1>Remote Stream</h1>
-          <ReactPlayer
-            playing
-            muted
-            height="300px"
-            width="500px"
-            url={remotestream}
-          />
-        </>
-      )}
-    </div>
+          <div className="buttons">
+            <button
+              onClick={video ? SwitchingOnCamera : handleVideoOff}
+              className="VideoOffButton"
+            >
+              Video {video ? "On" : "Off"}
+            </button>
+          </div>
+        </div>
+        <div className="remoteVideo">           
+          {remotestream && (
+            <>
+              <div className="videoContainer">
+                <h1>Remote Stream</h1>
+                <ReactPlayer
+                  className="player"
+                  playing
+                  width="500px"
+                  url={remotestream}
+                />
+                <div className="buttons">
+                  <button onClick={endCallHandle} className="VideoOffButton">
+                    End Call
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

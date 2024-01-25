@@ -10,7 +10,7 @@ const Navbar = ({ email, setEmail, name, setName, pic, setPic }) => {
 
   const handleModalClick = () => {
     setinfoModal(!infoModal);
-  };
+  }
 
   const handleSignIn = () => {
     signInWithPopup(auth, provider).then((data) => {
@@ -20,6 +20,7 @@ const Navbar = ({ email, setEmail, name, setName, pic, setPic }) => {
       localStorage.setItem("email", data.user.email);
       localStorage.setItem("name", data.user.displayName);
       localStorage.setItem("pic", data.user.photoURL);
+      console.log(data)
     });
   };
 
@@ -27,7 +28,7 @@ const Navbar = ({ email, setEmail, name, setName, pic, setPic }) => {
     setEmail(localStorage.getItem("email"));
     setName(localStorage.getItem("name"));
     setPic(localStorage.getItem("pic"));
-  }, []);
+  }, [setEmail,setName,setPic]);
 
   return (
     <>
@@ -40,7 +41,7 @@ const Navbar = ({ email, setEmail, name, setName, pic, setPic }) => {
           }}
         >
           <img src={icon} alt="" className="icon" />
-          <h1 className="name">MeetUp</h1>
+          <h1 className="name">Clear Connect</h1>
         </div>
         {email ? (
           <div
@@ -57,6 +58,7 @@ const Navbar = ({ email, setEmail, name, setName, pic, setPic }) => {
               alt=""
               className="signedInImage"
               onClick={handleModalClick}
+              style={{marginRight:"10px"}}
             />
           </div>
         ) : (

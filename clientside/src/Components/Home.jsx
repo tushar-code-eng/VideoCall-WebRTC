@@ -38,7 +38,7 @@ const Home = ({email,setEmail,name,setName,pic,setPic}) => {
         <p className='homepara'>Stay connected and collaborate with friends, family and colleagues no matter where you are</p>
         {<button className='homeSignInbutton' onClick={handleSignIn}>Sign In</button>}
       </div>
-      <img src={homeImage} alt="" className="homeImage" />
+      <img width="590px" src={homeImage} alt="" className="homeImage" />
     </div>
   )
 }

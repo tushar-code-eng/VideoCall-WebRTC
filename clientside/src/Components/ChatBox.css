@@ -1,0 +1,64 @@
+.chatBoxBackground{
+    background-color: rgba(255, 255, 255, 0.352);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.chatBox{
+    position: absolute;
+    background-color: rgb(253, 252, 252);
+    width: 280px;
+    border-radius:10px;
+    border: 1px solid rgb(166, 160, 160);
+    padding: 10px;
+    z-index: 99;
+}
+
+.head{
+    padding: 0 10px 0px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 18px;
+    /* height: 20px; */
+}
+
+.title{
+    font-size: 12px;
+    text-align: center;
+    margin-top:20px ;
+}
+
+.content{
+    /* position:relative; */
+    /* background-color: red; */
+    color: black;
+    width: 100%;
+    margin-top: 3vh;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    /* padding-bottom: 5px; */
+}
+
+.chatspace{
+    background-color: aliceblue;
+    height: 60vh;
+    width: 100%;
+}
+
+@media (max-width: 400px) {
+    
+    .chatBox{
+        position: absolute;
+        background-color: rgb(253, 252, 252);
+        width: 100%;
+        border-radius:10px;
+        border: 1px solid rgb(166, 160, 160);
+        padding: 10px;
+        z-index: 99;
+    }
+}

@@ -8,7 +8,7 @@ const emailToSocketIdMap = new Map()
 const socketIdToEmailMap = new Map()
 
 io.on('connection', socket => {
-   console.log('Socket Connected', socket.id)
+   // console.log('Socket Connected', socket.id)
    socket.on("room:join", data => { ////////// 1111111111111
       const { name,email, room } = data
       emailToSocketIdMap.set(email, socket.id)
@@ -37,5 +37,10 @@ io.on('connection', socket => {
    // socket.on("End:Call",({to,offer})=>{
    //    io.to(to).emit("Call:Ended",{from:socket.id,offer})
    // })
+
+   //CHATTING
+   socket.on("userMessage",(msg,name)=>{
+      io.emit("message",{msg,name})
+   })
 })
 

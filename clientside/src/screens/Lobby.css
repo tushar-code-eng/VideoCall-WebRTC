@@ -1,14 +1,16 @@
 .lobbyContainer{
-    height: 75vh;
+    /* height: 75vh; */
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-around;
-    flex-wrap: wrap;
-    padding: 40px;
+    margin-top: 50px;
+    /* padding: 40px; */
 }
 
 .lobbyText{
-    width: 48%;
+    /* width: 48%; */
+    width: 500px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -23,6 +25,19 @@
     border-radius: 5px;
     color: white;
     cursor: pointer;
+}
+
+.heading{
+    font-size:45px ;
+    color: rgb(20, 19, 19);
+    margin: 0;
+}
+
+.para{
+    position:relative;
+    font-size: 20px;
+    width:70% ;
+    color: rgb(109, 106, 106);
 }
 
 .lobbyForm{
@@ -48,22 +63,8 @@
     font-size: 18px;
 }
 
-
-.heading{
-    font-size:45px ;
-    color: rgb(20, 19, 19);
-    margin: 0;
-}
-
-.para{
-    position:relative;
-    font-size: 20px;
-    width:70% ;
-    color: rgb(109, 106, 106);
-}
-
 .lobbySlider{
-    width: 48%;
+    /* width: 48%; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -92,4 +93,79 @@
 }
 .sliderTextPara{
     width: 400px;
+}
+
+
+@media (max-width: 940px) {
+    .lobbyText{
+        /* width: 48%; */
+        width: 500px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .heading{
+        font-size:45px ;
+        width: 100%;
+        color: rgb(20, 19, 19);
+        margin: 0;
+    }
+    
+    .para{
+        width: 100%;
+        position:relative;
+        font-size: 20px;
+        color: rgb(109, 106, 106);
+        /* width: 500px; */
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .lobbyMeetingButton{
+        padding: 15px;
+        font-size: 17px;
+        background-color:#4146e3;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        width: 100%;
+    }
+    
+    .lobbyForm{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+    }
+    
+    .formInput{
+        margin-top: 10px;
+        padding: 15px;
+        border-radius: 5px;
+        border: 1px solid black;
+        font-size: 14px;
+        outline-color: #4146e3;
+        width: 82%;
+    }
+  
+}
+
+@media (max-width: 510px) {
+    .lobbyText{
+        /* width: 48%; */
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+    }
+  
 }
